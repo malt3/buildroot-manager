@@ -10,6 +10,7 @@ jobs:
         sysroot:
          - aarch64
          - x86_64
+         - cm4
     steps:
       - name: Check out
         uses: actions/checkout@v3
@@ -27,5 +28,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.sysroot }}
-          path: builds/${{ matrix.sysroot }}/images/rootfs.tar.xz
+          path: builds/${{ matrix.sysroot }}/images/*
 
