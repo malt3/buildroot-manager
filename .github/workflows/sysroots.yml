@@ -1,0 +1,31 @@
+
+name: Build sysroots
+on: [push, workflow_dispatch]
+jobs:
+  sysroot:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sysroot:
+         - aarch64
+         - x86_64
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+#      - name: Setup
+#        uses: ./.github/actions/deps
+
+      - name: Build sysroot
+        env:
+          config: ${{ matrix.sysroot }}
+        run: |
+          ./buildroot-manager "${config}"
+          
+      - name: Upload sysroot
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.sysroot }}
+          path: builds/${{ matrix.sysroot }}/images/rootfs.tar.xz
+
